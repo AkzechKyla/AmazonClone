@@ -656,5 +656,37 @@ const products = [
       "apparel",
       "mens"
     ]
+  },
+  {
+    id: "4533fdae-70c8-4dad-9710-b15576487671",
+    image: "images/products/backpack.jpg",
+    name: "Durable Black Backpack with Multiple Compartments",
+    rating: {
+      stars: 4.5,
+      count: 2056
+    },
+    priceCents: 4999,
+    keywords: [
+      "backpack",
+      "black",
+      "durable",
+      "multi-compartment"
+    ]
+  },
+  {
+    id: "64d5491e-e2bc-47c5-97d3-bed766c4c7b4",
+    image: "images/products/umbrella.jpg",
+    name: "UV Folding Umbrella Durable Waterproof Wind Resistant UV Prevention Sunscreen Umbrellas",
+    rating: {
+      stars: 4.5,
+      count: 1384
+    },
+    priceCents: 2699,
+    keywords: [
+      "umbrella",
+      "windproof",
+      "UV",
+      "waterproof"
+    ]
   }
 ];
