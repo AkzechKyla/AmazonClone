@@ -60,13 +60,14 @@ document.querySelectorAll('.add-to-cart-button').forEach((button) => {
     const {productId} = button.dataset;
 
     const itemInCart = cart.find(item => item.productID === productId);
+    const itemQuantity = document.querySelector(`.js-quantity-selector-${productId}`);
 
     if (itemInCart) {
-      itemInCart.quantity += Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
+      itemInCart.quantity += Number(itemQuantity.value);
     } else {
       cart.push({
         productId,
-        quantity: 1
+        quantity: Number(itemQuantity.value)
       });
     }
 
