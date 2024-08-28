@@ -17,7 +17,7 @@ function generateOrderSummary() {
     });
 
     cartSummaryHTML += `
-          <div class="cart-item-container">
+          <div class="cart-item-container" data-product-id="${matchingProduct.id}">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -113,5 +113,15 @@ function deleteCartProduct() {
   });
 }
 
+function updateItemQuantity() {
+  document.querySelectorAll('.cart-item-container').forEach((container) => {
+    container.addEventListener('click', () => {
+      console.log(container);
+      container.classList.add('is-editing-quantity');
+    });
+  });
+}
+
 generateOrderSummary();
 updateCartQuantity('.return-to-home-link');
+updateItemQuantity();
