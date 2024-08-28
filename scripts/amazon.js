@@ -99,3 +99,5 @@ function showAddedMessage(productId) {
   // Store the timeout ID for this product
   addedMessageTimeouts[productId] = timeoutId;
 }
+
+updateCartQuantity();
