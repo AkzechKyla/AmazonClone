@@ -1,4 +1,4 @@
-import {cart, deleteProductToCart} from '../data/cart.js';
+import {cart, deleteProductToCart, updateCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 
@@ -106,8 +106,10 @@ function deleteCartProduct() {
 
       deleteProductToCart(productId);
       generateOrderSummary();
+      updateCartQuantity('.return-to-home-link');
     });
   });
 }
 
 generateOrderSummary();
+updateCartQuantity('.return-to-home-link');
