@@ -2,9 +2,10 @@ import {cart} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 
-let cartSummaryHTML = '';
+function generateOrderSummary() {
+  let cartSummaryHTML = '';
 
-cart.forEach((cartItem) => {
+  cart.forEach((cartItem) => {
     const productId = cartItem.productId;
 
     let matchingProduct;
@@ -14,8 +15,6 @@ cart.forEach((cartItem) => {
             matchingProduct = product;
          }
     });
-
-    // console.log(matchingProduct);
 
     cartSummaryHTML += `
           <div class="cart-item-container">
@@ -41,7 +40,7 @@ cart.forEach((cartItem) => {
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary">
+                  <span class="delete-quantity-link link-primary" data-delete-id="${matchingProduct.id}">
                     Delete
                   </span>
                 </div>
@@ -94,6 +93,28 @@ cart.forEach((cartItem) => {
             </div>
           </div>
         `
-});
+  });
 
-document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
+  document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
+  deleteCartProduct();
+}
+
+function deleteCartProduct() {
+  document.querySelectorAll('.delete-quantity-link').forEach((deleteBtn) => {
+    deleteBtn.addEventListener('click', () => {
+      const {deleteId} = deleteBtn.dataset;
+
+      cart.forEach((cartItem) => {
+        console.log(cartItem.productId)
+        if (cartItem.productId === deleteId) {
+          cart.splice(cart.indexOf(cartItem), 1);
+        }
+      });
+
+      console.log(cart);
+      generateOrderSummary();
+    });
+  });
+}
+
+generateOrderSummary();
