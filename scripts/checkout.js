@@ -1,4 +1,4 @@
-import {cart} from '../data/cart.js';
+import {cart, deleteProductToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 
@@ -40,7 +40,7 @@ function generateOrderSummary() {
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary" data-delete-id="${matchingProduct.id}">
+                  <span class="delete-quantity-link link-primary" data-product-id="${matchingProduct.id}">
                     Delete
                   </span>
                 </div>
@@ -100,18 +100,11 @@ function generateOrderSummary() {
 }
 
 function deleteCartProduct() {
-  document.querySelectorAll('.delete-quantity-link').forEach((deleteBtn) => {
-    deleteBtn.addEventListener('click', () => {
-      const {deleteId} = deleteBtn.dataset;
+  document.querySelectorAll('.delete-quantity-link').forEach((deleteLink) => {
+    deleteLink.addEventListener('click', () => {
+      const {productId} = deleteLink.dataset;
 
-      cart.forEach((cartItem) => {
-        console.log(cartItem.productId)
-        if (cartItem.productId === deleteId) {
-          cart.splice(cart.indexOf(cartItem), 1);
-        }
-      });
-
-      console.log(cart);
+      deleteProductToCart(productId);
       generateOrderSummary();
     });
   });

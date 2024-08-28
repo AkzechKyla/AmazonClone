@@ -16,6 +16,14 @@ export function addToCart(productId) {
       cart.push({
         productId,
         quantity: Number(itemQuantity.value)
-      });
-    }
+    });
   }
+}
+
+export function deleteProductToCart(productId) {
+  cart.forEach((cartItem) => {
+    if (cartItem.productId === productId) {
+      cart.splice(cart.indexOf(cartItem), 1);
+    }
+  });
+}
