@@ -1,4 +1,4 @@
-import {cart, deleteProductToCart, updateCartQuantity} from '../data/cart.js';
+import {cart, deleteProductToCart, updateCartQuantity, updateQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 
@@ -35,12 +35,12 @@ function generateOrderSummary() {
                 </div>
                 <div class="product-quantity">
                   <span>
-                    Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+                    Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
                   </span>
                   <span class="update-quantity-link link-primary" data-product-id="${matchingProduct.id}">
                     Update
                   </span>
-                  <input class="quantity-input">
+                  <input class="quantity-input js-quantity-input-${matchingProduct.id}">
                   <span class="save-quantity-link link-primary js-save-quantity-link-${matchingProduct.id}">Save</span>
                   <span class="delete-quantity-link link-primary" data-product-id="${matchingProduct.id}">
                     Delete
@@ -121,17 +121,15 @@ function updateItemQuantity() {
 
       container.classList.add('is-editing-quantity');
 
-      saveItemQuantity(`.js-save-quantity-link-${productId}`, container);
+      document.querySelector(`.js-save-quantity-link-${productId}`).addEventListener('click', () => {
+        const inputQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+        updateQuantity(productId, inputQuantity);
+        updateCartQuantity('.return-to-home-link');
+        generateOrderSummary();
+        container.classList.remove('is-editing-quantity');
+      });
     });
   });
 }
 
-function saveItemQuantity(selector, container) {
-  document.querySelector(selector).addEventListener('click', () => {
-    container.classList.remove('is-editing-quantity');
-  });
-}
-
 generateOrderSummary();
-updateCartQuantity('.return-to-home-link');
-updateItemQuantity();
