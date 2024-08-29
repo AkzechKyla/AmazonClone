@@ -99,6 +99,8 @@ function generateOrderSummary() {
 
   document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
   deleteCartProduct();
+  updateCartQuantity('.return-to-home-link');
+  updateItemQuantity();
 }
 
 function deleteCartProduct() {
