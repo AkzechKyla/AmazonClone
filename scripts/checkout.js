@@ -17,7 +17,7 @@ function generateOrderSummary() {
     });
 
     cartSummaryHTML += `
-          <div class="cart-item-container" data-product-id="${matchingProduct.id}">
+          <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -37,11 +37,11 @@ function generateOrderSummary() {
                   <span>
                     Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                   </span>
-                  <span class="update-quantity-link link-primary">
+                  <span class="update-quantity-link link-primary" data-product-id="${matchingProduct.id}">
                     Update
                   </span>
                   <input class="quantity-input">
-                  <span class="save-quantity-link link-primary">Save</span>
+                  <span class="save-quantity-link link-primary js-save-quantity-link-${matchingProduct.id}">Save</span>
                   <span class="delete-quantity-link link-primary" data-product-id="${matchingProduct.id}">
                     Delete
                   </span>
@@ -114,11 +114,21 @@ function deleteCartProduct() {
 }
 
 function updateItemQuantity() {
-  document.querySelectorAll('.cart-item-container').forEach((container) => {
-    container.addEventListener('click', () => {
-      console.log(container);
+  document.querySelectorAll('.update-quantity-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      const productId = link.dataset.productId;
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+
       container.classList.add('is-editing-quantity');
+
+      saveItemQuantity(`.js-save-quantity-link-${productId}`, container);
     });
+  });
+}
+
+function saveItemQuantity(selector, container) {
+  document.querySelector(selector).addEventListener('click', () => {
+    container.classList.remove('is-editing-quantity');
   });
 }
 
