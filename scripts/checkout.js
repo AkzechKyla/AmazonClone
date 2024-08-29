@@ -125,10 +125,16 @@ function updateItemQuantity() {
 
       document.querySelector(`.js-save-quantity-link-${productId}`).addEventListener('click', () => {
         const inputQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
-        updateQuantity(productId, inputQuantity);
-        updateCartQuantity('.return-to-home-link');
-        generateOrderSummary();
-        container.classList.remove('is-editing-quantity');
+
+        if (inputQuantity >= 0 && inputQuantity < 1000) {
+          updateQuantity(productId, inputQuantity);
+          updateCartQuantity('.return-to-home-link');
+          generateOrderSummary();
+          container.classList.remove('is-editing-quantity');
+        } else {
+          alert('Invalid quantity');
+        }
+
       });
     });
   });
