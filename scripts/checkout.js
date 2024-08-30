@@ -11,6 +11,7 @@ function generateOrderSummary() {
     const productId = cartItem.productId;
 
     let matchingProduct;
+    let deliveryDate;
 
     products.forEach((product) => {
          if (product.id === productId) {
@@ -18,10 +19,16 @@ function generateOrderSummary() {
          }
     });
 
+    deliveryOptions.forEach((deliveryOption) => {
+      if (deliveryOption.id === cartItem.deliveryOptionId) {
+        deliveryDate = getDeliveryDate(deliveryOption.deliveryDays, 'days');
+      }
+    });
+
     cartSummaryHTML += `
           <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
-              Delivery date: Tuesday, June 21
+              Delivery date: ${deliveryDate}
             </div>
 
             <div class="cart-item-details-grid">
@@ -59,8 +66,6 @@ function generateOrderSummary() {
             </div>
           </div>
         `
-
-
   });
 
   document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
@@ -75,13 +80,11 @@ function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
   deliveryOptions.forEach((deliveryOption) => {
     let deliveryDate = getDeliveryDate(deliveryOption.deliveryDays, 'days');
     let shippingPrice = `$${deliveryOption.priceCents / 100} - Shipping`;
-    let isChecked = cartItem.deliveryOptionId === deliveryOption.id ? 'checked' : 'nop' ;
+    let isChecked = cartItem.deliveryOptionId === deliveryOption.id ? 'checked' : '' ;
 
     if (deliveryOption.priceCents === 0) {
       shippingPrice = 'FREE Shipping';
     }
-
-    console.log(isChecked);
 
     deliveryOptionsHTML += `
                 <div class="delivery-option">
@@ -105,6 +108,7 @@ function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
 function getDeliveryDate(days, timeDescription) {
   const dateToday = dayjs();
   let deliveryDate = dateToday.add(days, timeDescription);
+
   return deliveryDate.format('dddd, MMMM D');
 }
 
