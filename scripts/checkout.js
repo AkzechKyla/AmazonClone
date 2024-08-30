@@ -52,55 +52,39 @@ function generateOrderSummary() {
                 <div class="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                <div class="delivery-option">
-                  <input type="radio" checked
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Tuesday, June 21
-                    </div>
-                    <div class="delivery-option-price">
-                      FREE Shipping
-                    </div>
-                  </div>
-                </div>
-                <div class="delivery-option">
-                  <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Wednesday, June 15
-                    </div>
-                    <div class="delivery-option-price">
-                      $4.99 - Shipping
-                    </div>
-                  </div>
-                </div>
-                <div class="delivery-option">
-                  <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Monday, June 13
-                    </div>
-                    <div class="delivery-option-price">
-                      $9.99 - Shipping
-                    </div>
-                  </div>
-                </div>
+                ${generateDeliveryOptionsHTML(matchingProduct.id)}
               </div>
             </div>
           </div>
         `
   });
 
-  document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
   deleteCartProduct();
   updateCartQuantity('.return-to-home-link');
   updateItemQuantity();
+  document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
+}
+
+function generateDeliveryOptionsHTML(productId) {
+  let deliveryOptionsHTML = '';
+  deliveryOptions.forEach((deliveryOption) => {
+    deliveryOptionsHTML += `
+                <div class="delivery-option">
+                  <input type="radio" class="delivery-option-input"
+                    name="delivery-option-${productId}">
+                  <div>
+                    <div class="delivery-option-date">
+                      ${deliveryOption.deliveryDays}
+                    </div>
+                    <div class="delivery-option-price">
+                      ${deliveryOption.priceCents}
+                    </div>
+                  </div>
+                </div>
+      `;
+  });
+
+  return deliveryOptionsHTML;
 }
 
 function deleteCartProduct() {
