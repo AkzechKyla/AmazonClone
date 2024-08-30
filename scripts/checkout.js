@@ -1,6 +1,8 @@
 import {cart, deleteProductToCart, updateCartQuantity, updateQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+import {deliveryOptions} from '../data/deliveryOptions.js';
 
 function generateOrderSummary() {
   let cartSummaryHTML = '';
@@ -52,32 +54,45 @@ function generateOrderSummary() {
                 <div class="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                ${generateDeliveryOptionsHTML(matchingProduct.id)}
+                ${generateDeliveryOptionsHTML(matchingProduct, cartItem)}
               </div>
             </div>
           </div>
         `
+
+
   });
 
+  document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
   deleteCartProduct();
   updateCartQuantity('.return-to-home-link');
   updateItemQuantity();
-  document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
 }
 
-function generateDeliveryOptionsHTML(productId) {
+function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
   let deliveryOptionsHTML = '';
+
   deliveryOptions.forEach((deliveryOption) => {
+    let deliveryDate = getDeliveryDate(deliveryOption.deliveryDays, 'days');
+    let shippingPrice = `$${deliveryOption.priceCents / 100} - Shipping`;
+    let isChecked = cartItem.deliveryOptionId === deliveryOption.id ? 'checked' : 'nop' ;
+
+    if (deliveryOption.priceCents === 0) {
+      shippingPrice = 'FREE Shipping';
+    }
+
+    console.log(isChecked);
+
     deliveryOptionsHTML += `
                 <div class="delivery-option">
-                  <input type="radio" class="delivery-option-input"
-                    name="delivery-option-${productId}">
+                  <input type="radio" ${isChecked} class="delivery-option-input"
+                    name="delivery-option-${matchingProduct.id}">
                   <div>
                     <div class="delivery-option-date">
-                      ${deliveryOption.deliveryDays}
+                      ${deliveryDate}
                     </div>
                     <div class="delivery-option-price">
-                      ${deliveryOption.priceCents}
+                      ${shippingPrice}
                     </div>
                   </div>
                 </div>
@@ -85,6 +100,12 @@ function generateDeliveryOptionsHTML(productId) {
   });
 
   return deliveryOptionsHTML;
+}
+
+function getDeliveryDate(days, timeDescription) {
+  const dateToday = dayjs();
+  let deliveryDate = dateToday.add(days, timeDescription);
+  return deliveryDate.format('dddd, MMMM D');
 }
 
 function deleteCartProduct() {
