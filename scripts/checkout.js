@@ -45,15 +45,20 @@ function generateOrderSummary() {
               <span>
                 Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
               </span>
-              <span class="update-quantity-link link-primary" data-product-id="${matchingProduct.id}">
+              <span
+                class="update-quantity-link link-primary"
+                onclick="window.updateItemQuantity('${matchingProduct.id}')"
+              >
                 Update
               </span>
               <input type="number" max="1000" min="1" value="${cartItem.quantity}" class="quantity-input js-quantity-input-${matchingProduct.id}">
-              <span class="save-quantity-link link-primary js-save-quantity-link-${matchingProduct.id}">Save</span>
+              <span
+                class="save-quantity-link link-primary js-save-quantity-link-${matchingProduct.id}"
+                onclick="window.saveItemQuantity('${matchingProduct.id}')"
+                >Save</span>
               <span
                 class="delete-quantity-link link-primary"
-                data-product-id="${matchingProduct.id}"
-                onclick="window.deleteCartProduct(this)"
+                onclick="window.deleteCartProduct('${matchingProduct.id}')"
               >
                 Delete
               </span>
@@ -73,7 +78,6 @@ function generateOrderSummary() {
 
   document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
   document.querySelector('.return-to-home-link').textContent = getCartQuantity() + " items";
-  updateItemQuantity();
 }
 
 function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
@@ -91,8 +95,6 @@ function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
     deliveryOptionsHTML += `
       <div
         class="delivery-option"
-        data-product-id="${matchingProduct.id}"
-        data-delivery-option-id="${deliveryOption.id}"
         onclick="window.updateDeliveryDate(this)"
       >
         <input type="radio" ${isChecked} class="delivery-option-input"
@@ -125,43 +127,29 @@ window.updateDeliveryDate = (option) => {
   generateOrderSummary();
 }
 
-window.deleteCartProduct = (deleteLink) => {
-  const {productId} = deleteLink.dataset;
-
+window.deleteCartProduct = (productId) => {
   deleteProductToCart(productId);
   generateOrderSummary();
   document.querySelector('.return-to-home-link').textContent = getCartQuantity();
 };
 
-function updateItemQuantity() {
-  document.querySelectorAll('.update-quantity-link').forEach((link) => {
-    link.addEventListener('click', () => {
-      const productId = link.dataset.productId;
-      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+window.updateItemQuantity = (productId) => {
+  const container = document.querySelector(`.js-cart-item-container-${productId}`);
+  container.classList.add('is-editing-quantity');
+}
 
-      container.classList.add('is-editing-quantity');
+window.saveItemQuantity = (productId) => {
+  const inputQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+  const container = document.querySelector(`.js-cart-item-container-${productId}`);
 
-      document.querySelector(`.js-save-quantity-link-${productId}`).addEventListener('click', update);
-      document.querySelector(`.js-quantity-input-${productId}`).addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          update();
-        }
-      });
-
-      function update() {
-        const inputQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
-
-        if (inputQuantity >= 0 && inputQuantity < 1000) {
-          updateQuantity(productId, inputQuantity);
-          document.querySelector('.return-to-home-link').textContent = getCartQuantity();
-          generateOrderSummary();
-          container.classList.remove('is-editing-quantity');
-        } else {
-          alert('Quantity must be at least 0 and less than 1000');
-        }
-      }
-    });
-  });
+  if (inputQuantity >= 0 && inputQuantity < 1000) {
+    updateQuantity(productId, inputQuantity);
+    document.querySelector('.return-to-home-link').textContent = getCartQuantity();
+    generateOrderSummary();
+    container.classList.remove('is-editing-quantity');
+  } else {
+    alert('Quantity must be at least 0 and less than 1000');
+  }
 }
 
 generateOrderSummary();
