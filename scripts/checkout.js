@@ -50,7 +50,11 @@ function generateOrderSummary() {
               </span>
               <input type="number" max="1000" min="1" value="${cartItem.quantity}" class="quantity-input js-quantity-input-${matchingProduct.id}">
               <span class="save-quantity-link link-primary js-save-quantity-link-${matchingProduct.id}">Save</span>
-              <span class="delete-quantity-link link-primary" data-product-id="${matchingProduct.id}">
+              <span
+                class="delete-quantity-link link-primary"
+                data-product-id="${matchingProduct.id}"
+                onclick="window.deleteCartProduct(this)"
+              >
                 Delete
               </span>
             </div>
@@ -68,10 +72,8 @@ function generateOrderSummary() {
   });
 
   document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
-  deleteCartProduct();
   document.querySelector('.return-to-home-link').textContent = getCartQuantity() + " items";
   updateItemQuantity();
-  updateDeliveryDate();
 }
 
 function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
@@ -87,7 +89,12 @@ function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
     }
 
     deliveryOptionsHTML += `
-      <div class="delivery-option" data-product-id="${matchingProduct.id}" data-delivery-option-id="${deliveryOption.id}">
+      <div
+        class="delivery-option"
+        data-product-id="${matchingProduct.id}"
+        data-delivery-option-id="${deliveryOption.id}"
+        onclick="window.updateDeliveryDate(this)"
+      >
         <input type="radio" ${isChecked} class="delivery-option-input"
           name="delivery-option-${matchingProduct.id}">
         <div>
@@ -112,27 +119,19 @@ function getDeliveryDate(days, timeDescription) {
   return deliveryDate.format('dddd, MMMM D');
 }
 
-function updateDeliveryDate() {
-  document.querySelectorAll('.delivery-option').forEach((option) => {
-    option.addEventListener('click', () => {
-      const {productId, deliveryOptionId} = option.dataset;
-      updateDeliveryOption(productId, deliveryOptionId);
-      generateOrderSummary();
-    })
-  })
+window.updateDeliveryDate = (option) => {
+  const {productId, deliveryOptionId} = option.dataset;
+  updateDeliveryOption(productId, deliveryOptionId);
+  generateOrderSummary();
 }
 
-function deleteCartProduct() {
-  document.querySelectorAll('.delete-quantity-link').forEach((deleteLink) => {
-    deleteLink.addEventListener('click', () => {
-      const {productId} = deleteLink.dataset;
+window.deleteCartProduct = (deleteLink) => {
+  const {productId} = deleteLink.dataset;
 
-      deleteProductToCart(productId);
-      generateOrderSummary();
-      document.querySelector('.return-to-home-link').textContent = getCartQuantity();
-    });
-  });
-}
+  deleteProductToCart(productId);
+  generateOrderSummary();
+  document.querySelector('.return-to-home-link').textContent = getCartQuantity();
+};
 
 function updateItemQuantity() {
   document.querySelectorAll('.update-quantity-link').forEach((link) => {
