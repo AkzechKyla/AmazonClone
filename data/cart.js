@@ -43,13 +43,12 @@ export function deleteProductToCart(productId) {
   saveToLocalStorage();
 }
 
-export function updateCartQuantity(selector) {
+export function getCartQuantity() {
   let cartQuantity = 0;
   cart.forEach((cartItem) => {
     cartQuantity += cartItem.quantity;
-  })
-
-  document.querySelector(selector).innerHTML = cartQuantity;
+  });
+  return cartQuantity;
 }
 
 export function updateQuantity(productId, newQuantity) {

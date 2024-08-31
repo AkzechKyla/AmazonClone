@@ -1,4 +1,4 @@
-import {cart, deleteProductToCart, updateCartQuantity, updateQuantity, updateDeliveryOption} from '../data/cart.js';
+import {cart, deleteProductToCart, getCartQuantity, updateQuantity, updateDeliveryOption} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -69,7 +69,7 @@ function generateOrderSummary() {
 
   document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
   deleteCartProduct();
-  updateCartQuantity('.return-to-home-link');
+  document.querySelector('.return-to-home-link').textContent = getCartQuantity() + " items";
   updateItemQuantity();
   updateDeliveryDate();
 }
@@ -129,7 +129,7 @@ function deleteCartProduct() {
 
       deleteProductToCart(productId);
       generateOrderSummary();
-      updateCartQuantity('.return-to-home-link');
+      document.querySelector('.return-to-home-link').textContent = getCartQuantity();
     });
   });
 }
@@ -154,7 +154,7 @@ function updateItemQuantity() {
 
         if (inputQuantity >= 0 && inputQuantity < 1000) {
           updateQuantity(productId, inputQuantity);
-          updateCartQuantity('.return-to-home-link');
+          document.querySelector('.return-to-home-link').textContent = getCartQuantity();
           generateOrderSummary();
           container.classList.remove('is-editing-quantity');
         } else {
