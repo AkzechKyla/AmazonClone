@@ -1,6 +1,7 @@
 import {cart, getCartQuantity} from '../../data/cart.js'
 import {getProduct} from '../../data/products.js';
 import {getDeliveryOption} from '../../data/deliveryOptions.js';
+import {formatCurrency} from '../utils/money.js';
 
 export function generatePaymentSummary() {
     const productPriceCents = calculateItemsPrice();
@@ -9,40 +10,42 @@ export function generatePaymentSummary() {
     const taxCents = totalBeforeTaxCents * 0.1;
     const totalCents = totalBeforeTaxCents + taxCents;
 
-    document.querySelector('.payment-summary').innerHTML = (`
+    const paymentSummaryHTML = (`
         <div class="payment-summary-title">
         Order Summary
         </div>
 
         <div class="payment-summary-row">
         <div>Items (${getCartQuantity()}):</div>
-        <div class="payment-summary-money">$${(productPriceCents / 100).toFixed(2)}</div>
+        <div class="payment-summary-money">$${formatCurrency(productPriceCents)}</div>
         </div>
 
         <div class="payment-summary-row">
         <div>Shipping &amp; handling:</div>
-        <div class="payment-summary-money">$${(shippingPriceCents / 100).toFixed(2)}</div>
+        <div class="payment-summary-money">$${formatCurrency(shippingPriceCents)}</div>
         </div>
 
         <div class="payment-summary-row subtotal-row">
         <div>Total before tax:</div>
-        <div class="payment-summary-money">$${(totalBeforeTaxCents / 100).toFixed(2)}</div>
+        <div class="payment-summary-money">$${formatCurrency(totalBeforeTaxCents)}</div>
         </div>
 
         <div class="payment-summary-row">
         <div>Estimated tax (10%):</div>
-        <div class="payment-summary-money">$${(taxCents / 100).toFixed(2)}</div>
+        <div class="payment-summary-money">$${formatCurrency(taxCents)}</div>
         </div>
 
         <div class="payment-summary-row total-row">
         <div>Order total:</div>
-        <div class="payment-summary-money">$${(totalCents / 100).toFixed(2)}</div>
+        <div class="payment-summary-money">$${formatCurrency(totalCents)}</div>
         </div>
 
         <button class="place-order-button button-primary">
         Place your order
         </button>`
     );
+
+    document.querySelector('.payment-summary').innerHTML = paymentSummaryHTML;
 }
 
 function calculateItemsPrice() {
