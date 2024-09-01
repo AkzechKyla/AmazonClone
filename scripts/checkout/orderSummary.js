@@ -3,6 +3,7 @@ import {getProduct} from '../../data/products.js';
 import {formatCurrency} from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
+import {generatePaymentSummary} from './paymentSummary.js'
 
 export function generateOrderSummary() {
   let cartSummaryHTML = '';
@@ -122,11 +123,13 @@ window.updateDeliveryDate = (option) => {
   const {productId, deliveryOptionId} = option.dataset;
   updateDeliveryOption(productId, deliveryOptionId);
   generateOrderSummary();
+  generatePaymentSummary();
 }
 
 window.deleteCartProduct = (productId) => {
   deleteProductToCart(productId);
   generateOrderSummary();
+  generatePaymentSummary();
   updateCheckoutHeader();
 };
 
@@ -143,6 +146,7 @@ window.saveItemQuantity = (productId) => {
     updateQuantity(productId, inputQuantity);
     updateCheckoutHeader();
     generateOrderSummary();
+    generatePaymentSummary();
     container.classList.remove('is-editing-quantity');
   } else {
     alert('Quantity must be at least 0 and less than 1000');
