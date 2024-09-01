@@ -95,6 +95,8 @@ function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
     deliveryOptionsHTML += `
       <div
         class="delivery-option"
+        data-product-id="${matchingProduct.id}"
+        data-delivery-option-id="${deliveryOption.id}"
         onclick="window.updateDeliveryDate(this)"
       >
         <input type="radio" ${isChecked} class="delivery-option-input"
