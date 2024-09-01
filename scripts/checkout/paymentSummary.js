@@ -9,7 +9,6 @@ export function generatePaymentSummary() {
     const taxCents = totalBeforeTaxCents * 0.1;
     const totalCents = totalBeforeTaxCents + taxCents;
 
-    console.log(document.querySelector('.payment-summary'));
     document.querySelector('.payment-summary').innerHTML = (`
         <div class="payment-summary-title">
         Order Summary
