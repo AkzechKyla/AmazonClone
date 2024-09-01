@@ -1,6 +1,6 @@
 import {cart, getCartQuantity} from '../../data/cart.js'
 import {getProduct} from '../../data/products.js';
-import {deliveryOptions} from '../../data/deliveryOptions.js';
+import {getDeliveryOption} from '../../data/deliveryOptions.js';
 
 export function generatePaymentSalary() {
     console.log(`
@@ -54,14 +54,8 @@ export function getShippingFee() {
     let shippingFee = 0;
 
     cart.forEach((cartItem) => {
-        let matchingDeliveryOption;
-        deliveryOptions.forEach((option) => {
-            if (cartItem.deliveryOptionId === option.id) {
-                matchingDeliveryOption = option;
-            }
-        });
-
-        shippingFee += matchingDeliveryOption.priceCents;
+        let deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
+        shippingFee += deliveryOption.priceCents;
     });
 
     return shippingFee / 100;
