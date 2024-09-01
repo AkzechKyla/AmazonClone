@@ -54,7 +54,7 @@ export function getShippingFee() {
     let shippingFee = 0;
 
     cart.forEach((cartItem) => {
-        let deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
+        const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
         shippingFee += deliveryOption.priceCents;
     });
 

@@ -10,7 +10,7 @@ export function generateOrderSummary() {
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
     const matchingProduct = getProduct(productId);
-    let deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
+    const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
     let deliveryDate = getDeliveryDate(deliveryOption.deliveryDays, 'days');
 
     cartSummaryHTML += `
