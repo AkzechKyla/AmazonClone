@@ -10,12 +10,12 @@ export function generatePaymentSalary() {
 
         <div class="payment-summary-row">
         <div>Items (${getCartQuantity()}):</div>
-        <div class="payment-summary-money">$${getItemsPrice()}</div>
+        <div class="payment-summary-money">$${getItemsPrice().toFixed(2)}</div>
         </div>
 
         <div class="payment-summary-row">
         <div>Shipping &amp; handling:</div>
-        <div class="payment-summary-money">${getShippingFee()}</div>
+        <div class="payment-summary-money">$${getShippingFee().toFixed(2)}</div>
         </div>
 
         <div class="payment-summary-row subtotal-row">
