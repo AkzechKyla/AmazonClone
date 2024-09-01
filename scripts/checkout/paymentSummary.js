@@ -2,35 +2,42 @@ import {cart, getCartQuantity} from '../../data/cart.js'
 import {getProduct} from '../../data/products.js';
 import {getDeliveryOption} from '../../data/deliveryOptions.js';
 
-export function generatePaymentSalary() {
-    console.log(`
+export function generatePaymentSummary() {
+    const productPriceCents = calculateItemsPrice();
+    const shippingPriceCents = calculateShippingFee();
+    const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
+    const taxCents = totalBeforeTaxCents * 0.1;
+    const totalCents = totalBeforeTaxCents + taxCents;
+
+    console.log(document.querySelector('.payment-summary'));
+    document.querySelector('.payment-summary').innerHTML = (`
         <div class="payment-summary-title">
         Order Summary
         </div>
 
         <div class="payment-summary-row">
         <div>Items (${getCartQuantity()}):</div>
-        <div class="payment-summary-money">$${getItemsPrice().toFixed(2)}</div>
+        <div class="payment-summary-money">$${(productPriceCents / 100).toFixed(2)}</div>
         </div>
 
         <div class="payment-summary-row">
         <div>Shipping &amp; handling:</div>
-        <div class="payment-summary-money">$${getShippingFee().toFixed(2)}</div>
+        <div class="payment-summary-money">$${(shippingPriceCents / 100).toFixed(2)}</div>
         </div>
 
         <div class="payment-summary-row subtotal-row">
         <div>Total before tax:</div>
-        <div class="payment-summary-money">$47.74</div>
+        <div class="payment-summary-money">$${(totalBeforeTaxCents / 100).toFixed(2)}</div>
         </div>
 
         <div class="payment-summary-row">
         <div>Estimated tax (10%):</div>
-        <div class="payment-summary-money">$4.77</div>
+        <div class="payment-summary-money">$${(taxCents / 100).toFixed(2)}</div>
         </div>
 
         <div class="payment-summary-row total-row">
         <div>Order total:</div>
-        <div class="payment-summary-money">$52.51</div>
+        <div class="payment-summary-money">$${(totalCents / 100).toFixed(2)}</div>
         </div>
 
         <button class="place-order-button button-primary">
@@ -39,7 +46,7 @@ export function generatePaymentSalary() {
     );
 }
 
-export function getItemsPrice() {
+function calculateItemsPrice() {
     let productPriceCents = 0;
 
     cart.forEach((cartItem) => {
@@ -47,10 +54,10 @@ export function getItemsPrice() {
         productPriceCents += product.priceCents * cartItem.quantity;
       });
 
-    return productPriceCents / 100;
+    return productPriceCents;
 }
 
-export function getShippingFee() {
+function calculateShippingFee() {
     let shippingPriceCents = 0;
 
     cart.forEach((cartItem) => {
@@ -58,5 +65,5 @@ export function getShippingFee() {
         shippingPriceCents += deliveryOption.priceCents;
     });
 
-    return shippingPriceCents / 100;
+    return shippingPriceCents;
 }
