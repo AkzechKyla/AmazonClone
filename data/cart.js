@@ -68,5 +68,5 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
     }
   });
 
-  console.log(cart);
+  saveToLocalStorage();
 }
