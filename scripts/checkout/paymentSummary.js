@@ -1,4 +1,6 @@
 import {cart, getCartQuantity} from '../../data/cart.js'
+import {products} from '../../data/products.js';
+import {deliveryOptions} from '../../data/deliveryOptions.js';
 
 export function generatePaymentSalary() {
     console.log(`
@@ -13,7 +15,7 @@ export function generatePaymentSalary() {
 
         <div class="payment-summary-row">
         <div>Shipping &amp; handling:</div>
-        <div class="payment-summary-money">$4.99</div>
+        <div class="payment-summary-money">${getShippingFee()}</div>
         </div>
 
         <div class="payment-summary-row subtotal-row">
@@ -52,4 +54,21 @@ export function getItemsPrice() {
       });
 
     return itemsPrice / 100;
+}
+
+export function getShippingFee() {
+    let shippingFee = 0;
+
+    cart.forEach((cartItem) => {
+        let matchingDeliveryOption;
+        deliveryOptions.forEach((option) => {
+            if (cartItem.deliveryOptionId === option.id) {
+                matchingDeliveryOption = option;
+            }
+        });
+
+        shippingFee += matchingDeliveryOption.priceCents;
+    });
+
+    return shippingFee / 100;
 }
