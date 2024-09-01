@@ -1,5 +1,5 @@
 import {cart, getCartQuantity} from '../../data/cart.js'
-import {products} from '../../data/products.js';
+import {getProduct} from '../../data/products.js';
 import {deliveryOptions} from '../../data/deliveryOptions.js';
 
 export function generatePaymentSalary() {
@@ -43,14 +43,8 @@ export function getItemsPrice() {
     let itemsPrice = 0;
 
     cart.forEach((cartItem) => {
-        let matchingProduct;
-        products.forEach((product) => {
-            if (product.id === cartItem.productId) {
-               matchingProduct = product;
-            }
-        });
-
-        itemsPrice += matchingProduct.priceCents * cartItem.quantity;
+        const product = getProduct(cartItem.productId);
+        itemsPrice += product.priceCents * cartItem.quantity;
       });
 
     return itemsPrice / 100;
