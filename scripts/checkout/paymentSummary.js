@@ -40,23 +40,23 @@ export function generatePaymentSalary() {
 }
 
 export function getItemsPrice() {
-    let itemsPrice = 0;
+    let productPriceCents = 0;
 
     cart.forEach((cartItem) => {
         const product = getProduct(cartItem.productId);
-        itemsPrice += product.priceCents * cartItem.quantity;
+        productPriceCents += product.priceCents * cartItem.quantity;
       });
 
-    return itemsPrice / 100;
+    return productPriceCents / 100;
 }
 
 export function getShippingFee() {
-    let shippingFee = 0;
+    let shippingPriceCents = 0;
 
     cart.forEach((cartItem) => {
         const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
-        shippingFee += deliveryOption.priceCents;
+        shippingPriceCents += deliveryOption.priceCents;
     });
 
-    return shippingFee / 100;
+    return shippingPriceCents / 100;
 }
