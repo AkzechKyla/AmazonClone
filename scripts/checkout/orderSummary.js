@@ -1,8 +1,7 @@
 import {cart, deleteProductToCart, getCartQuantity, updateQuantity, updateDeliveryOption} from '../../data/cart.js';
 import {getProduct} from '../../data/products.js';
 import {formatCurrency} from '../utils/money.js';
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
+import {deliveryOptions, getDeliveryOption, getDeliveryDate} from '../../data/deliveryOptions.js';
 import {generatePaymentSummary} from './paymentSummary.js'
 
 export function generateOrderSummary() {
@@ -110,13 +109,6 @@ function updateCheckoutHeader() {
   let cartQuantity = getCartQuantity();
   let itemText = cartQuantity === 0 ? "item" : "items";
   document.querySelector('.return-to-home-link').textContent = `${cartQuantity} ${itemText}`;
-}
-
-function getDeliveryDate(days, timeDescription) {
-  const dateToday = dayjs();
-  let deliveryDate = dateToday.add(days, timeDescription);
-
-  return deliveryDate.format('dddd, MMMM D');
 }
 
 window.updateDeliveryDate = (option) => {
