@@ -1,7 +1,7 @@
 import {cart, deleteProductToCart, getCartQuantity, updateQuantity, updateDeliveryOption} from '../../data/cart.js';
 import {getProduct} from '../../data/products.js';
 import {formatCurrency} from '../utils/money.js';
-import {deliveryOptions, getDeliveryOption, getDeliveryDate} from '../../data/deliveryOptions.js';
+import {deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
 import {generatePaymentSummary} from './paymentSummary.js'
 
 export function generateOrderSummary() {
@@ -11,7 +11,7 @@ export function generateOrderSummary() {
     const productId = cartItem.productId;
     const matchingProduct = getProduct(productId);
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
-    let deliveryDate = getDeliveryDate(deliveryOption.deliveryDays, 'days');
+    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays, 'days');
 
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -73,7 +73,7 @@ function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
   let deliveryOptionsHTML = '';
 
   deliveryOptions.forEach((deliveryOption) => {
-    let deliveryDate = getDeliveryDate(deliveryOption.deliveryDays, 'days');
+    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays, 'days');
     let shippingPrice = `$${deliveryOption.priceCents / 100} - Shipping`;
     let isChecked = cartItem.deliveryOptionId === deliveryOption.id ? 'checked' : '' ;
 

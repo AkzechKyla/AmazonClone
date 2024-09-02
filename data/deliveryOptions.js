@@ -10,23 +10,38 @@ export function getDeliveryOption(productDeliveryOptionId) {
     return deliveryOption || deliveryOption[0];
 }
 
-export function getDeliveryDate(days, timeDescription) {
+export function calculateDeliveryDate(days, timeDescription) {
     const dateToday = dayjs();
-    let deliveryDate = dateToday.add(days, timeDescription);
+    let deliveryDate = dateToday;
+
+    for (let i = 0; i <= days; i++) {
+        deliveryDate = dateToday.add(i, timeDescription);
+        if (isWeekend(deliveryDate)) {
+            continue;
+        }
+    }
 
     return deliveryDate.format('dddd, MMMM D');
 }
 
+function isWeekend(date) {
+    if (date.format('dddd') === 'Saturday' ||
+    date.format('dddd') === 'Sunday') {
+        return true;
+    }
+    return false;
+}
+
 export const deliveryOptions = [{
     id: '1',
-    deliveryDays: 11,
+    deliveryDays: 7,
     priceCents: 0
 }, {
     id: '2',
-    deliveryDays: 5,
+    deliveryDays: 3,
     priceCents: 499
 }, {
     id: '3',
-    deliveryDays: 3,
+    deliveryDays: 1,
     priceCents: 999
 }];
