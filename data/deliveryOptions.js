@@ -25,11 +25,8 @@ export function calculateDeliveryDate(days, timeDescription) {
 }
 
 function isWeekend(date) {
-    if (date.format('dddd') === 'Saturday' ||
-    date.format('dddd') === 'Sunday') {
-        return true;
-    }
-    return false;
+    const dayOfWeek = date.format('dddd');
+    return dayOfWeek === 'Saturday' || dayOfWeek === 'Sunday';
 }
 
 export const deliveryOptions = [{
