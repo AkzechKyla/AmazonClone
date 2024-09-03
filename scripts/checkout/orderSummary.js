@@ -11,7 +11,7 @@ export function generateOrderSummary() {
     const productId = cartItem.productId;
     const matchingProduct = getProduct(productId);
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
-    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays, 'days');
+    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays);
 
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -73,7 +73,7 @@ function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
   let deliveryOptionsHTML = '';
 
   deliveryOptions.forEach((deliveryOption) => {
-    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays, 'days');
+    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays);
     let shippingPrice = `$${deliveryOption.priceCents / 100} - Shipping`;
     let isChecked = cartItem.deliveryOptionId === deliveryOption.id ? 'checked' : '' ;
 
