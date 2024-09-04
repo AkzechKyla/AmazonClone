@@ -22,12 +22,11 @@ function saveToLocalStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-export function addToCart(productId) {
+export function addToCart(productId, quantity) {
     const itemInCart = cart.find(item => item.productId === productId);
-    const itemQuantity = document.querySelector(`.js-quantity-selector-${productId}`);
 
     if (itemInCart) {
-      itemInCart.quantity += Number(itemQuantity.value);
+      itemInCart.quantity += quantity;
     } else {
       cart.push({
         productId,
