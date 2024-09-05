@@ -1,4 +1,4 @@
-class Cart {
+export class Cart {
   cartItems;
   #localStorageKey;
 
@@ -82,7 +82,3 @@ class Cart {
     this.saveToLocalStorage();
   }
 }
-
-
-const cart = new Cart('cart-oop');
-const businessCart = new Cart('cart-business');

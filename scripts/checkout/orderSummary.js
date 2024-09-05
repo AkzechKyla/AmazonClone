@@ -1,13 +1,13 @@
-import {cart, deleteProductToCart, getCartQuantity, updateQuantity, updateDeliveryOption} from '../../data/cart.js';
+// import {cart, deleteProductToCart, getCartQuantity, updateQuantity, updateDeliveryOption} from '../../data/cart.js';
+import {cart} from '../checkout.js';
 import {getProduct} from '../../data/products.js';
-import {formatCurrency} from '../utils/money.js';
 import {deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
 import {generatePaymentSummary} from './paymentSummary.js'
 
 export function generateOrderSummary() {
   let cartSummaryHTML = '';
 
-  cart.forEach((cartItem) => {
+  cart.cartItems.forEach((cartItem) => {
     const productId = cartItem.productId;
     const matchingProduct = getProduct(productId);
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
@@ -106,20 +106,21 @@ function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
 }
 
 function updateCheckoutHeader() {
-  let cartQuantity = getCartQuantity();
+  let cartQuantity = cart.getCartQuantity();
   let itemText = cartQuantity === 0 ? "item" : "items";
   document.querySelector('.return-to-home-link').textContent = `${cartQuantity} ${itemText}`;
 }
 
 window.updateDeliveryDate = (option) => {
   const {productId, deliveryOptionId} = option.dataset;
-  updateDeliveryOption(productId, deliveryOptionId);
+  cart.updateDeliveryOption(productId, deliveryOptionId);
   generateOrderSummary();
   generatePaymentSummary();
+
 }
 
 window.deleteCartProduct = (productId) => {
-  deleteProductToCart(productId);
+  cart.deleteProductToCart(productId);
   generateOrderSummary();
   generatePaymentSummary();
   updateCheckoutHeader();
@@ -135,7 +136,7 @@ window.saveItemQuantity = (productId) => {
   const container = document.querySelector(`.js-cart-item-container-${productId}`);
 
   if (inputQuantity >= 0 && inputQuantity < 1000) {
-    updateQuantity(productId, inputQuantity);
+    cart.updateQuantity(productId, inputQuantity);
     updateCheckoutHeader();
     generateOrderSummary();
     generatePaymentSummary();
