@@ -1,8 +1,10 @@
 // import {addToCart, getCartQuantity} from '../data/cart.js';
 import {Cart} from '../data/cart-class.js';
-import {products} from '../data/products.js';
+import {products, loadProducts} from '../data/products.js';
 
 const cart = new Cart('cart1');
+
+loadProducts(renderProducts);
 
 function renderProducts() {
   let productsHTML = '';
