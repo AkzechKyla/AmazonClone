@@ -7,7 +7,13 @@ import {loadProducts, loadProductsFetch} from '../data/products.js';
 export const cart = new Cart('cart1');
 
 async function loadPage() {
-    await loadProductsFetch();
+    try {
+        // throw 'error';
+
+        await loadProductsFetch();
+    } catch(error) {
+        console.log('Unexpected error. Please try again later.');
+    }
     generateOrderSummary();
     generatePaymentSummary();
 }
