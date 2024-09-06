@@ -2,21 +2,16 @@ import {generateOrderSummary} from './checkout/orderSummary.js'
 import {generatePaymentSummary} from './checkout/paymentSummary.js'
 import {Cart, loadCart} from '../data/cart-class.js';
 import '../data/backend-practice.js';
-import {loadProducts} from '../data/products.js';
+import {loadProducts, loadProductsFetch} from '../data/products.js';
 
 export const cart = new Cart('cart1');
 
 // run multiple promises at the same time using Promise.all()
 // sample: load product and cart at the same time
 
+
 Promise.all([ // array of promises
-    new Promise((resolve) => {
-        console.log('start loading products');
-        loadProducts(() => {
-            console.log('finished loading products');
-            resolve('value1'); // you can add parameter on resolve
-        });
-    }),
+    loadProductsFetch(), // use fetch returns promise directly
     new Promise((resolve) => {
         console.log('start loading cart');
         loadCart(() => {
@@ -29,6 +24,7 @@ Promise.all([ // array of promises
     generateOrderSummary();
     generatePaymentSummary();
 });
+
 
 /*
 new Promise((resolve) => {
