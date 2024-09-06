@@ -82,3 +82,17 @@ export class Cart {
     this.saveToLocalStorage();
   }
 }
+
+export function loadCart(fun) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener('load', () => {
+    console.log(xhr.response);
+
+    console.log('The cart has been loaded.');
+    fun(); // run the function after the response has loaded
+  });
+
+  xhr.open('GET', 'https://supersimplebackend.dev/cart');
+  xhr.send();
+}
