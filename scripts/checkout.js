@@ -6,10 +6,18 @@ import {loadProducts, loadProductsFetch} from '../data/products.js';
 
 export const cart = new Cart('cart1');
 
+async function loadPage() {
+    await loadProductsFetch();
+    generateOrderSummary();
+    generatePaymentSummary();
+}
+
+loadPage();
+
 // run multiple promises at the same time using Promise.all()
 // sample: load product and cart at the same time
 
-
+/*
 Promise.all([ // array of promises
     loadProductsFetch(), // use fetch returns promise directly
     new Promise((resolve) => {
@@ -24,6 +32,7 @@ Promise.all([ // array of promises
     generateOrderSummary();
     generatePaymentSummary();
 });
+*/
 
 
 /*
