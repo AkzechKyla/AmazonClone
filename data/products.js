@@ -38,7 +38,25 @@ class Clothing extends Product {
 
   extraInfoHTML() {
     return `
-      <a href="../../images/clothing-size-chart.png" target="_blank">Size Chart</a>
+      <a href="../../${this.sizeChartLink}" target="_blank">Size Chart</a>
+    `;
+  }
+}
+
+class Appliance extends Product {
+  instructionsLink;
+  warrantyLink;
+
+  constructor(productDetails) {
+    super(productDetails);
+    this.instructionsLink = productDetails.instructionsLink;
+    this.warrantyLink = productDetails.warrantyLink;
+  }
+
+  extraInfoHTML() {
+    return `
+      <a href="../../${this.instructionsLink}" target="_blank">Instructions</a>
+      <a href="../../${this.warrantyLink}" target="_blank">Warranty</a>
     `;
   }
 }
