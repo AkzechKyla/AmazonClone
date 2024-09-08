@@ -88,5 +88,13 @@
         </div>
       </div>
     </div>
+
+    <script>
+      const url = new URL(window.location.href);
+
+      console.log(url.searchParams.get('orderId')); // http://127.0.0.1:5501/tracking.html?orderId=123
+      console.log(url.searchParams.get('productId')); // http://127.0.0.1:5501/tracking.html?orderId=123&productId=456
+    </script>
+
   </body>
 </html>

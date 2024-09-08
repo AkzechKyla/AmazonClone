@@ -66,6 +66,9 @@ export function generatePaymentSummary() {
         } catch {
             console.log('Unexpected error. Try again later.');
         }
+
+        console.log(window.location.href);
+        window.location.href = 'orders.html';
     });
 }
 
