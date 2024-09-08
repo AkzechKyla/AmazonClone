@@ -3,6 +3,7 @@ import {cart} from '../checkout.js';
 import {getProduct} from '../../data/products.js';
 import {getDeliveryOption} from '../../data/deliveryOptions.js';
 import {formatCurrency} from '../utils/money.js';
+import {addOrder} from '../../data/orders.js'
 
 export function generatePaymentSummary() {
     const productPriceCents = calculateItemsPrice();
@@ -47,6 +48,25 @@ export function generatePaymentSummary() {
     );
 
     document.querySelector('.payment-summary').innerHTML = paymentSummaryHTML;
+
+    document.querySelector('.place-order-button').addEventListener('click', async () => {
+        try {
+            const response = await fetch('https://supersimplebackend.dev/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // sending js object
+                },
+                body: JSON.stringify({ // actual data to send to the backend
+                    cart: cart // need to convert to string
+                })
+            });
+
+            const order = await response.json(); // get the data - order created by backend
+            addOrder(order);
+        } catch {
+            console.log('Unexpected error. Try again later.');
+        }
+    });
 }
 
 function calculateItemsPrice() {
