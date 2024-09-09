@@ -6,23 +6,31 @@ import {loadProducts, loadProductsFetch} from '../data/products.js';
 
 export const cart = new Cart('cart1');
 
-async function loadPage() {
-    try {
-        // throw 'error';
-
-        await loadProductsFetch();
-        await loadCartFetch();
-    } catch(error) {
-        console.log('Unexpected error. Please try again later.');
-    }
-    generateOrderSummary();
-    generatePaymentSummary();
-}
-
-loadPage();
+// async function loadPage() {
+//     try {
+//         // throw 'error';
+//
+//         await loadProductsFetch();
+//         await loadCartFetch();
+//     } catch(error) {
+//         console.log('Unexpected error. Please try again later.');
+//     }
+//     generateOrderSummary();
+//     generatePaymentSummary();
+// }
+//
+// loadPage();
 
 // run multiple promises at the same time using Promise.all()
 // sample: load product and cart at the same time
+
+await Promise.all([
+    loadProductsFetch(),
+    loadCartFetch()
+]).then(() => {
+    generateOrderSummary();
+    generatePaymentSummary();
+});
 
 /*
 Promise.all([ // array of promises
