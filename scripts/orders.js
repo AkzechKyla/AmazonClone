@@ -1,6 +1,10 @@
 import {orders} from '../data/orders.js';
-import {formatCurrency} from './utils/money.js';
 import {products, loadProductsFetch, getProduct} from '../data/products.js';
+import {deliveryOptions, calculateDeliveryDate} from '../data/deliveryOptions.js';
+import {Cart} from '../data/cart-class.js';
+import {formatCurrency} from './utils/money.js';
+
+const cart = new Cart('cart1');
 
 function generateOrderPageHTML() {
     console.log('test');
@@ -46,43 +50,55 @@ function generateOrderPageHTML() {
 function generateOrderDetailsHTML(orderProducts) {
   let orderDetailsHTML = '';
   let matchingProduct;
+  let deliveryDate;
 
   orderProducts.forEach((product) => {
     matchingProduct = getProduct(product.productId);
-    console.log(matchingProduct);
 
-    orderDetailsHTML += `
-      <div class="product-image-container">
-        <img src="${matchingProduct.image}">
-      </div>
+    cart.cartItems.forEach((item) => {
+      if (matchingProduct.id === item.productId) {
 
-      <div class="product-details">
-        <div class="product-name">
-          ${matchingProduct.name}
-        </div>
-        <div class="product-delivery-date">
-          Arriving on: June 17
-        </div>
-        <div class="product-quantity">
-          Quantity: 2
-        </div>
-        <button class="buy-again-button button-primary">
-          <img class="buy-again-icon" src="images/icons/buy-again.png">
-          <span class="buy-again-message">Buy it again</span>
-        </button>
-      </div>
+        deliveryOptions.forEach((option) => {
+          if (option.id === item.deliveryOptionId) {
+            deliveryDate = calculateDeliveryDate(option.deliveryDays);
 
-      <div class="product-actions">
-        <a href="tracking.html">
-          <button class="track-package-button button-secondary">
-            Track package
-          </button>
-        </a>
-      </div>
-    `;
+            console.log(deliveryDate);
+
+            orderDetailsHTML += `
+            <div class="product-image-container">
+              <img src="${matchingProduct.image}">
+            </div>
+
+            <div class="product-details">
+              <div class="product-name">
+                ${matchingProduct.name}
+              </div>
+              <div class="product-delivery-date">
+                Arriving on: ${deliveryDate}
+              </div>
+              <div class="product-quantity">
+                Quantity: ${item.quantity}
+              </div>
+              <button class="buy-again-button button-primary">
+                <img class="buy-again-icon" src="images/icons/buy-again.png">
+                <span class="buy-again-message">Buy it again</span>
+              </button>
+            </div>
+
+            <div class="product-actions">
+              <a href="tracking.html">
+                <button class="track-package-button button-secondary">
+                  Track package
+                </button>
+              </a>
+            </div>
+            `;
+          }
+        });
+      }
+    });
   });
 
-  console.log(orderProducts);
   return orderDetailsHTML;
 }
 
