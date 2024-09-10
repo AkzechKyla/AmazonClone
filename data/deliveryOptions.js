@@ -11,13 +11,13 @@ export function getDeliveryOption(productDeliveryOptionId) {
 }
 
 export function calculateDeliveryDate(days) {
-    const dateToday = dayjs();
-    let deliveryDate = dateToday;
+    const date = dayjs();
+    let deliveryDate = date;
     let addedDays = 0;
 
     while (true) {
         if (addedDays === days) {
-            return deliveryDate.format('dddd, MMMM D');
+            return deliveryDate;
         }
 
         deliveryDate = deliveryDate.add(1, 'days');

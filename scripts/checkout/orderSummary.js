@@ -2,7 +2,7 @@
 import {cart} from '../checkout.js';
 import {getProduct} from '../../data/products.js';
 import {deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
-import {generatePaymentSummary} from './paymentSummary.js'
+import {generatePaymentSummary} from './paymentSummary.js';
 
 export function generateOrderSummary() {
   let cartSummaryHTML = '';
@@ -11,7 +11,7 @@ export function generateOrderSummary() {
     const productId = cartItem.productId;
     const matchingProduct = getProduct(productId);
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
-    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays);
+    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays).format('dddd, MMMM D');
 
     cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -73,7 +73,7 @@ function generateDeliveryOptionsHTML(matchingProduct, cartItem) {
   let deliveryOptionsHTML = '';
 
   deliveryOptions.forEach((deliveryOption) => {
-    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays);
+    let deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays).format('dddd, MMMM D');
     let shippingPrice = `$${deliveryOption.priceCents / 100} - Shipping`;
     let isChecked = cartItem.deliveryOptionId === deliveryOption.id ? 'checked' : '' ;
 

@@ -60,7 +60,7 @@ function generateOrderDetailsHTML(orderProducts) {
 
         deliveryOptions.forEach((option) => {
           if (option.id === item.deliveryOptionId) {
-            deliveryDate = calculateDeliveryDate(option.deliveryDays);
+            deliveryDate = calculateDeliveryDate(option.deliveryDays).format('MMMM D');
 
             console.log(deliveryDate);
 
