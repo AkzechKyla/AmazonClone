@@ -1,6 +1,6 @@
 import {orders} from '../data/orders.js';
 import {products, loadProductsFetch, getProduct} from '../data/products.js';
-import {deliveryOptions, calculateDeliveryDate} from '../data/deliveryOptions.js';
+import {deliveryOptions, calculateDeliveryDate, getDeliveryOption} from '../data/deliveryOptions.js';
 import {Cart} from '../data/cart-class.js';
 import {formatCurrency} from './utils/money.js';
 
@@ -43,52 +43,49 @@ function generateOrderPageHTML() {
       `);
     });
 
-    console.log(orderHTML);
+    //console.log(orderHTML);
     document.querySelector('.orders-grid').innerHTML = orderHTML;
 }
 
 function generateOrderDetailsHTML(orderProducts) {
   let orderDetailsHTML = '';
-  let deliveryDate;
 
   for (const product of orderProducts) {
     const matchingProduct = getProduct(product.productId);
     const item = cart.getCartItem(matchingProduct);
+    const deliveryOption = getDeliveryOption(item.deliveryOptionId);
+    const deliveryDate = calculateDeliveryDate(deliveryOption.deliveryDays).format('MMMM D');
 
-    for (const option of deliveryOptions) {
-      if (option.id === item.deliveryOptionId) {
-        deliveryDate = calculateDeliveryDate(option.deliveryDays).format('MMMM D');
+    if (deliveryOption.id === item.deliveryOptionId) {
+      orderDetailsHTML += `
+      <div class="product-image-container">
+        <img src="${matchingProduct.image}">
+      </div>
 
-        orderDetailsHTML += `
-        <div class="product-image-container">
-          <img src="${matchingProduct.image}">
+      <div class="product-details">
+        <div class="product-name">
+          ${matchingProduct.name}
         </div>
+        <div class="product-delivery-date">
+          Arriving on: ${deliveryDate}
+        </div>
+        <div class="product-quantity">
+          Quantity: ${item.quantity}
+        </div>
+        <button class="buy-again-button button-primary">
+          <img class="buy-again-icon" src="images/icons/buy-again.png">
+          <span class="buy-again-message">Buy it again</span>
+        </button>
+      </div>
 
-        <div class="product-details">
-          <div class="product-name">
-            ${matchingProduct.name}
-          </div>
-          <div class="product-delivery-date">
-            Arriving on: ${deliveryDate}
-          </div>
-          <div class="product-quantity">
-            Quantity: ${item.quantity}
-          </div>
-          <button class="buy-again-button button-primary">
-            <img class="buy-again-icon" src="images/icons/buy-again.png">
-            <span class="buy-again-message">Buy it again</span>
+      <div class="product-actions">
+        <a href="tracking.html">
+          <button class="track-package-button button-secondary">
+            Track package
           </button>
-        </div>
-
-        <div class="product-actions">
-          <a href="tracking.html">
-            <button class="track-package-button button-secondary">
-              Track package
-            </button>
-          </a>
-        </div>
-        `;
-      }
+        </a>
+      </div>
+      `;
     }
   }
 
