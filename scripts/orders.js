@@ -49,16 +49,15 @@ function generateOrderPageHTML() {
 
 function generateOrderDetailsHTML(orderProducts) {
   let orderDetailsHTML = '';
-  let matchingProduct;
   let deliveryDate;
 
-  orderProducts.forEach((product) => {
-    matchingProduct = getProduct(product.productId);
+  for (const product of orderProducts) {
+    const matchingProduct = getProduct(product.productId);
 
-    cart.cartItems.forEach((item) => {
+    for (const item of cart.cartItems) {
       if (matchingProduct.id === item.productId) {
 
-        deliveryOptions.forEach((option) => {
+        for (const option of deliveryOptions) {
           if (option.id === item.deliveryOptionId) {
             deliveryDate = calculateDeliveryDate(option.deliveryDays).format('MMMM D');
 
@@ -94,10 +93,10 @@ function generateOrderDetailsHTML(orderProducts) {
             </div>
             `;
           }
-        });
+        }
       }
-    });
-  });
+    }
+  }
 
   return orderDetailsHTML;
 }
