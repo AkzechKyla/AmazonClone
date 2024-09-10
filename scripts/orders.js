@@ -7,14 +7,9 @@ import {formatCurrency} from './utils/money.js';
 const cart = new Cart('cart1');
 
 function generateOrderPageHTML() {
-    console.log('test');
-    console.log(orders);
     let orderHTML = ''
 
-    orders.forEach((order) => {
-      console.log(products);
-      console.log(order.products[0]);
-
+    for (const order of orders) {
       orderHTML += (`
         <div class="order-container">
 
@@ -41,9 +36,8 @@ function generateOrderPageHTML() {
           </div>
         </div>
       `);
-    });
+    }
 
-    //console.log(orderHTML);
     document.querySelector('.orders-grid').innerHTML = orderHTML;
 }
 
