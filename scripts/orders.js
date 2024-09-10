@@ -53,47 +53,41 @@ function generateOrderDetailsHTML(orderProducts) {
 
   for (const product of orderProducts) {
     const matchingProduct = getProduct(product.productId);
+    const item = cart.getCartItem(matchingProduct);
 
-    for (const item of cart.cartItems) {
-      if (matchingProduct.id === item.productId) {
+    for (const option of deliveryOptions) {
+      if (option.id === item.deliveryOptionId) {
+        deliveryDate = calculateDeliveryDate(option.deliveryDays).format('MMMM D');
 
-        for (const option of deliveryOptions) {
-          if (option.id === item.deliveryOptionId) {
-            deliveryDate = calculateDeliveryDate(option.deliveryDays).format('MMMM D');
+        orderDetailsHTML += `
+        <div class="product-image-container">
+          <img src="${matchingProduct.image}">
+        </div>
 
-            console.log(deliveryDate);
+        <div class="product-details">
+          <div class="product-name">
+            ${matchingProduct.name}
+          </div>
+          <div class="product-delivery-date">
+            Arriving on: ${deliveryDate}
+          </div>
+          <div class="product-quantity">
+            Quantity: ${item.quantity}
+          </div>
+          <button class="buy-again-button button-primary">
+            <img class="buy-again-icon" src="images/icons/buy-again.png">
+            <span class="buy-again-message">Buy it again</span>
+          </button>
+        </div>
 
-            orderDetailsHTML += `
-            <div class="product-image-container">
-              <img src="${matchingProduct.image}">
-            </div>
-
-            <div class="product-details">
-              <div class="product-name">
-                ${matchingProduct.name}
-              </div>
-              <div class="product-delivery-date">
-                Arriving on: ${deliveryDate}
-              </div>
-              <div class="product-quantity">
-                Quantity: ${item.quantity}
-              </div>
-              <button class="buy-again-button button-primary">
-                <img class="buy-again-icon" src="images/icons/buy-again.png">
-                <span class="buy-again-message">Buy it again</span>
-              </button>
-            </div>
-
-            <div class="product-actions">
-              <a href="tracking.html">
-                <button class="track-package-button button-secondary">
-                  Track package
-                </button>
-              </a>
-            </div>
-            `;
-          }
-        }
+        <div class="product-actions">
+          <a href="tracking.html">
+            <button class="track-package-button button-secondary">
+              Track package
+            </button>
+          </a>
+        </div>
+        `;
       }
     }
   }

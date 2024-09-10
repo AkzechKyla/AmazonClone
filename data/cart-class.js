@@ -62,6 +62,14 @@ export class Cart {
     return cartQuantity;
   }
 
+  getCartItem(product) {
+    for (const item of this.cartItems) {
+      if (product.id === item.productId) return item;
+    }
+
+    return null;
+  }
+
   updateQuantity(productId, newQuantity) {
     this.cartItems.forEach((cartItem) => {
       if (cartItem.productId === productId) {
