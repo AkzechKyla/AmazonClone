@@ -27,7 +27,7 @@ A simple Amazon clone built using **HTML**, **CSS**, and **JavaScript**.
 ### Track Order Page
 ![image](https://github.com/user-attachments/assets/750f8a7d-2dde-4816-8ba2-8c1439557aae)
 
-### Access Link
+## Access Link
 You can view the live project here: https://akzechkyla.github.io/AmazonClone/
 
 ## Notes
